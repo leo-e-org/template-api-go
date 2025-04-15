@@ -1,0 +1,4 @@
+redis:
+  host: "localhost:6379"
+  db: 0
+  password: "pwd"

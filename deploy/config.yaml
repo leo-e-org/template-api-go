@@ -1,0 +1,4 @@
+redis:
+  host: ${redis_host}
+  db: 0
+  password: ${redis_password}
