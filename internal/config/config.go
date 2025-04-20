@@ -3,18 +3,21 @@ package config
 import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	"strings"
+	"os"
 	"template-api-go/internal/logger"
 )
 
 func LoadConfig() {
-	viper.AutomaticEnv()
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
-	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.AutomaticEnv()
 
-	err := viper.ReadInConfig()
-	if err != nil {
+	if err := viper.ReadInConfig(); err != nil {
 		logger.Logger.Fatal("Error reading configuration file", zap.Error(err))
+	}
+
+	for _, k := range viper.AllKeys() {
+		v := viper.GetString(k)
+		viper.Set(k, os.ExpandEnv(v))
 	}
 }
