@@ -52,7 +52,16 @@ func InitLogger() {
 }
 
 func GinLogger() gin.HandlerFunc {
+	skipPaths := map[string]bool{
+		"/template-api-go/healthz": true,
+		"/template-api-go/metrics": true,
+	}
 	return func(c *gin.Context) {
+		if skipPaths[c.Request.URL.Path] {
+			c.Next()
+			return
+		}
+
 		Logger.Info("Incoming request",
 			zap.String("Method", c.Request.Method),
 			zap.String("Path", c.Request.URL.Path),

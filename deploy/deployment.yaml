@@ -2,39 +2,31 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: template-api
-  name: template-api
+    app: template-api-go
+  name: template-api-go
 spec:
   replicas: 1
   revisionHistoryLimit: 2
   selector:
     matchLabels:
-      app: template-api
+      app: template-api-go
   strategy: { }
   template:
     metadata:
       labels:
-        app: template-api
+        app: template-api-go
     spec:
       containers:
-        - image: ${docker_registry}/it/template-api
-          name: template-api
+        - image: ${docker_registry}/it/template-api-go
+          name: template-api-go
           imagePullPolicy: Always
           resources: { }
-          env:
-            - name: redis_host
-              valueFrom:
-                secretKeyRef:
-                  name: template-api-secrets
-                  key: redis_host
-            - name: redis_password
-              valueFrom:
-                secretKeyRef:
-                  name: template-api-secrets
-                  key: redis_password
+          envFrom:
+            - secretRef:
+                name: template-api-go
           readinessProbe:
             httpGet:
-              path: /template-api/healthz
+              path: /template-api-go/healthz
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
@@ -43,7 +35,7 @@ spec:
             successThreshold: 1
           livenessProbe:
             httpGet:
-              path: /template-api/healthz
+              path: /template-api-go/healthz
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 60
@@ -51,12 +43,12 @@ spec:
             failureThreshold: 3
             successThreshold: 1
           volumeMounts:
-            - mountPath: /log
+            - mountPath: /app/log
               name: log-volume
       volumes:
         - name: log-volume
           hostPath:
-            path: /var/log/deployments/template-api
+            path: /var/log/deployments/template-api-go
       tolerations:
         - key: "node.kubernetes.io/memory-pressure"
           operator: "Exists"
@@ -74,12 +66,12 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    prometheus.io/path: /template-api/actuator/prometheus
+    prometheus.io/path: /template-api-go/metrics
     prometheus.io/port: "8080"
     prometheus.io/scrape: "true"
   labels:
-    app: template-api
-  name: template-api
+    app: template-api-go
+  name: template-api-go
   namespace: default
 spec:
   ports:
@@ -88,7 +80,7 @@ spec:
       protocol: TCP
       targetPort: 8080
   selector:
-    app: template-api
-  type: NodePort
+    app: template-api-go
+  type: ClusterIP
 status:
   loadBalancer: { }

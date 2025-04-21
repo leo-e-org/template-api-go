@@ -13,13 +13,13 @@ A template for building Go APIs with health checks, structured logging, Promethe
 
 ### Routes
 
-**Note:** all custom API routes have the context path `/template-api`.
+**Note:** all API routes have the context path `/template-api-go`.
 
 ```
 GET    | /healthz
 GET    | /metrics
 
-GET    | /AppVersion
+GET    | /app-version
 ```
 
 ### Repository file tree

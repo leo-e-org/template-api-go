@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 	"go.uber.org/zap"
 	"template-api-go/internal/controller"
@@ -18,14 +19,16 @@ func SetupRouter() *gin.Engine {
 	router.Use(logger.GinLogger())
 
 	prometheus := ginprometheus.NewPrometheus("go_api")
-	prometheus.Use(router)
+	prometheus.MetricsPath = "/template-api-go/metrics"
 
-	api := router.Group("/template-api")
-	api.GET("/AppVersion", controller.GetVersion)
+	api := router.Group("/template-api-go")
+	api.GET("/app-version", controller.GetVersion)
 
-	router.GET("/healthz", func(c *gin.Context) {
+	api.GET("/healthz", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "ok"})
 	})
+
+	router.GET(prometheus.MetricsPath, gin.WrapH(promhttp.Handler()))
 
 	return router
 }
