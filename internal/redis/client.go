@@ -25,3 +25,8 @@ func InitClient() {
 func Ping() error {
 	return Client.Ping(context.Background()).Err()
 }
+
+func CloseClient() error {
+	logger.Logger.Info("Closing Redis client connection")
+	return Client.Close()
+}
