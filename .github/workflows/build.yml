@@ -3,7 +3,9 @@ name: Build workflow
 on: [ push ]
 
 jobs:
-  go:
-    name: Go
-    uses: leo-ely/github-workflows/.github/workflows/build-go.yml@main
+  action:
+    name: Action
+    uses: leo-e-org/github-workflows/.github/workflows/main-build-k8s-go.yml@main
+    with:
+      image_name: ${{ github.repository }}
     secrets: inherit
