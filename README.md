@@ -26,7 +26,7 @@ GET    | /app-version
 
 ```
 ├── deploy/
-│   ├── config.yaml        # API configuration file
+│   ├── config.yml         # API configuration file
 │   ├── deployment.yaml    # Kubernetes manifest file
 │
 ├── internal/
