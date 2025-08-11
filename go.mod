@@ -8,7 +8,7 @@ require (
 	github.com/prometheus/client_golang v1.22.0
 	github.com/redis/go-redis/v9 v9.11.0
 	github.com/spf13/viper v1.20.1
-	github.com/zsais/go-gin-prometheus v1.0.0
+	github.com/zsais/go-gin-prometheus v1.0.1
 	go.uber.org/zap v1.27.0
 )
 
