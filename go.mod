@@ -6,7 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.11.0
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/prometheus/client_golang v1.23.2
-	github.com/redis/go-redis/v9 v9.13.0
+	github.com/redis/go-redis/v9 v9.16.0
 	github.com/spf13/viper v1.21.0
 	github.com/zsais/go-gin-prometheus v1.0.2
 	go.uber.org/zap v1.27.0
